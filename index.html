@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>基礎物理 16 週教學計畫</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ch1: #1a56a0; --ch1-bg: #e8f1fb; --ch1-light: #f4f8fd;
+    --ch2: #1a7a45; --ch2-bg: #e4f5ec; --ch2-light: #f2faf5;
+    --ch3: #a05c10; --ch3-bg: #fdf0dc; --ch3-light: #fef8ef;
+    --ch4: #991c5e; --ch4-bg: #fce7f3; --ch4-light: #fef5fa;
+    --ch5: #0c6e56; --ch5-bg: #dcf5ed; --ch5-light: #f0faf6;
+    --ch6: #5b21b6; --ch6-bg: #ede9fe; --ch6-light: #f7f5ff;
+    --ink: #1c1c2e;
+    --ink2: #4a4a6a;
+    --ink3: #8888a8;
+    --rule: #e0e0ee;
+    --page: #f8f8fc;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: var(--page);
+    color: var(--ink);
+    line-height: 1.75;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    background: var(--ink);
+    color: #fff;
+    text-align: center;
+    padding: 64px 40px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent, transparent 40px,
+      rgba(255,255,255,0.015) 40px, rgba(255,255,255,0.015) 80px
+    );
+  }
+  .cover h1 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 52px; font-weight: 700;
+    letter-spacing: 0.1em;
+    position: relative;
+  }
+  .cover h1 span { color: #7eb8f5; }
+  .cover .sub {
+    margin-top: 14px;
+    font-size: 16px; font-weight: 300;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.15em;
+    position: relative;
+  }
+  .cover .meta {
+    margin-top: 8px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.05em;
+    position: relative;
+  }
+
+  /* ── LEGEND ── */
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    justify-content: center;
+    padding: 20px 40px;
+    background: #fff;
+    border-bottom: 1px solid var(--rule);
+    font-size: 13px;
+    color: var(--ink2);
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 6px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* ── MAIN LAYOUT ── */
+  .container { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  /* ── LESSON CARD ── */
+  .lesson {
+    margin-bottom: 48px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    background: #fff;
+  }
+
+  /* Header */
+  .lesson-header {
+    display: flex; align-items: stretch;
+    border-bottom: none;
+  }
+  .lesson-num {
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+    min-width: 80px;
+    padding: 20px 12px;
+    font-family: 'Noto Serif TC', serif;
+    color: #fff;
+    text-align: center;
+    gap: 2px;
+  }
+  .lesson-num .wk { font-size: 11px; font-weight: 500; opacity: 0.8; letter-spacing: 0.1em; }
+  .lesson-num .n { font-size: 28px; font-weight: 700; line-height: 1; }
+  .lesson-num .u { font-size: 11px; opacity: 0.7; }
+  .lesson-title-block {
+    flex: 1;
+    padding: 18px 24px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .lesson-meta {
+    font-size: 12px; color: var(--ink3);
+    margin-bottom: 4px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .lesson-meta .ch-tag {
+    font-weight: 700; font-size: 12px;
+    padding: 1px 8px; border-radius: 4px;
+  }
+  .lesson-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 22px; font-weight: 700;
+    line-height: 1.3; color: var(--ink);
+  }
+  .lesson-sections {
+    margin-top: 5px;
+    font-size: 13px; color: var(--ink3);
+  }
+
+  /* ── ROW SECTIONS ── */
+  .section-row {
+    border-top: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 140px 1fr;
+  }
+  .section-row + .section-row { }
+
+  .row-label {
+    padding: 20px 16px;
+    display: flex; flex-direction: column;
+    align-items: flex-start; justify-content: flex-start;
+    border-right: 1px solid var(--rule);
+    gap: 6px;
+    min-width: 0;
+  }
+  .row-label .icon { font-size: 20px; }
+  .row-label .label-text {
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 0.05em;
+    writing-mode: horizontal-tb;
+    color: var(--ink2);
+  }
+
+  .row-content { padding: 20px 24px; }
+
+  /* Points */
+  .points { display: flex; flex-direction: column; gap: 10px; }
+  .point {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 0 10px;
+    font-size: 14px; line-height: 1.7; color: var(--ink2);
+  }
+  .point-num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 3px;
+    color: #fff;
+  }
+  .point-text strong { color: var(--ink); }
+  .point-sub {
+    grid-column: 2;
+    font-size: 13px; color: var(--ink3);
+    margin-top: 2px;
+    padding-left: 0;
+    border-left: 2px solid var(--rule);
+    padding-left: 10px;
+    line-height: 1.6;
+  }
+
+  /* Summary */
+  .summary-text {
+    font-size: 14.5px; line-height: 1.9; color: var(--ink2);
+    position: relative;
+    padding-left: 16px;
+    border-left: 3px solid var(--rule);
+  }
+
+  /* Tips */
+  .tips { display: flex; flex-direction: column; gap: 12px; }
+  .tip {
+    display: flex; gap: 12px; align-items: flex-start;
+    font-size: 14px; line-height: 1.7; color: var(--ink2);
+  }
+  .tip-icon {
+    flex-shrink: 0;
+    width: 26px; height: 26px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    margin-top: 1px;
+  }
+  .tip-text { flex: 1; }
+  .tip-text strong { color: var(--ink); }
+
+  /* Color theming */
+  .ch1 .lesson-num { background: var(--ch1); }
+  .ch1 .lesson-header { background: var(--ch1-light); }
+  .ch1 .ch-tag { background: var(--ch1-bg); color: var(--ch1); }
+  .ch1 .point-num { background: var(--ch1); }
+  .ch1 .summary-text { border-color: var(--ch1); }
+  .ch1 .tip-icon { background: var(--ch1-bg); color: var(--ch1); }
+
+  .ch2 .lesson-num { background: var(--ch2); }
+  .ch2 .lesson-header { background: var(--ch2-light); }
+  .ch2 .ch-tag { background: var(--ch2-bg); color: var(--ch2); }
+  .ch2 .point-num { background: var(--ch2); }
+  .ch2 .summary-text { border-color: var(--ch2); }
+  .ch2 .tip-icon { background: var(--ch2-bg); color: var(--ch2); }
+
+  .ch3 .lesson-num { background: var(--ch3); }
+  .ch3 .lesson-header { background: var(--ch3-light); }
+  .ch3 .ch-tag { background: var(--ch3-bg); color: var(--ch3); }
+  .ch3 .point-num { background: var(--ch3); }
+  .ch3 .summary-text { border-color: var(--ch3); }
+  .ch3 .tip-icon { background: var(--ch3-bg); color: var(--ch3); }
+
+  .ch4 .lesson-num { background: var(--ch4); }
+  .ch4 .lesson-header { background: var(--ch4-light); }
+  .ch4 .ch-tag { background: var(--ch4-bg); color: var(--ch4); }
+  .ch4 .point-num { background: var(--ch4); }
+  .ch4 .summary-text { border-color: var(--ch4); }
+  .ch4 .tip-icon { background: var(--ch4-bg); color: var(--ch4); }
+
+  .ch5 .lesson-num { background: var(--ch5); }
+  .ch5 .lesson-header { background: var(--ch5-light); }
+  .ch5 .ch-tag { background: var(--ch5-bg); color: var(--ch5); }
+  .ch5 .point-num { background: var(--ch5); }
+  .ch5 .summary-text { border-color: var(--ch5); }
+  .ch5 .tip-icon { background: var(--ch5-bg); color: var(--ch5); }
+
+  .ch6 .lesson-num { background: var(--ch6); }
+  .ch6 .lesson-header { background: var(--ch6-light); }
+  .ch6 .ch-tag { background: var(--ch6-bg); color: var(--ch6); }
+  .ch6 .point-num { background: var(--ch6); }
+  .ch6 .summary-text { border-color: var(--ch6); }
+  .ch6 .tip-icon { background: var(--ch6-bg); color: var(--ch6); }
+
+  /* ── CHAPTER DIVIDER ── */
+  .ch-divider {
+    display: flex; align-items: center; gap: 16px;
+    margin: 40px 0 20px;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 18px; font-weight: 700;
+    color: var(--ink);
+  }
+  .ch-divider::before, .ch-divider::after {
+    content: ''; flex: 1; height: 1px; background: var(--rule);
+  }
+  .ch-divider-badge {
+    padding: 5px 18px;
+    border-radius: 20px;
+    font-size: 15px;
+  }
+
+  @media print {
+    body { background: white; }
+    .lesson { box-shadow: none; border: 1px solid #e0e0ee; page-break-inside: avoid; }
+    .cover { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  }
+  @media (max-width: 640px) {
+    .section-row { grid-template-columns: 1fr; }
+    .row-label { border-right: none; border-bottom: 1px solid var(--rule); padding: 12px 16px; flex-direction: row; }
+    .lesson-title { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <h1>基礎<span>物理</span></h1>
+  <div class="sub">16 週教學進度 ｜ 詳細課程計畫</div>
+  <div class="meta">108 課綱 · 每週日一堂 · 2026/3/8 – 2026/6/21</div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#1a56a0"></div> 第1章 科學的態度與方法</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#1a7a45"></div> 第2章 物質的組成與交互作用</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#a05c10"></div> 第3章 物體的運動</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#991c5e"></div> 第4章 電與磁的統一</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#0c6e56"></div> 第5章 能量</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#5b21b6"></div> 第6章 量子現象</div>
+</div>
+
+<!-- ── EXAM SCHEDULE ── -->
+<div style="background:#fff;border-bottom:1px solid #e0e0ee;padding:28px 24px;">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div style="font-family:'Noto Serif TC',serif;font-size:15px;font-weight:700;color:#1c1c2e;margin-bottom:16px;letter-spacing:0.05em;">
+      📅　114學年度第2學期　考試行事曆｜新北市光仁高中 高一下
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;">
+
+      <!-- 第一次段考 -->
+      <div style="border-radius:10px;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,0.07);">
+        <div style="background:#c2410c;padding:10px 16px;display:flex;align-items:center;gap:8px;">
+          <span style="font-size:18px;">📝</span>
+          <span style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:700;color:#fff;letter-spacing:0.05em;">第一次段考</span>
+        </div>
+        <div style="background:#fff7ed;padding:14px 16px;">
+          <div style="font-size:20px;font-weight:700;color:#c2410c;font-family:'Noto Serif TC',serif;margin-bottom:4px;">2026/3/31 ～ 4/1</div>
+          <div style="font-size:12px;color:#9a6338;margin-bottom:10px;">考試前最後一堂：第2堂（3/15）</div>
+          <div style="font-size:12px;color:#78350f;background:#fef3c7;border-radius:6px;padding:8px 10px;line-height:1.6;">
+            <strong>考試範圍：</strong>第1章 科學的態度與方法<br>
+            （1-1 科學態度 ／ 1-2 科學方法 ／ 1-3 物理學簡介 ／ 國際單位制）
+          </div>
+        </div>
+      </div>
+
+      <!-- 第二次段考 -->
+      <div style="border-radius:10px;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,0.07);">
+        <div style="background:#1e40af;padding:10px 16px;display:flex;align-items:center;gap:8px;">
+          <span style="font-size:18px;">📝</span>
+          <span style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:700;color:#fff;letter-spacing:0.05em;">第二次段考</span>
+        </div>
+        <div style="background:#eff6ff;padding:14px 16px;">
+          <div style="font-size:20px;font-weight:700;color:#1e40af;font-family:'Noto Serif TC',serif;margin-bottom:4px;">2026/5/14 ～ 5/15</div>
+          <div style="font-size:12px;color:#3b6ea8;margin-bottom:10px;">考試前最後一堂：第9堂（5/3）</div>
+          <div style="font-size:12px;color:#1e3a8a;background:#dbeafe;border-radius:6px;padding:8px 10px;line-height:1.6;">
+            <strong>考試範圍：</strong>第2章 物質的組成 ／ 第3章 物體的運動 ／ 第4章 電與磁（4-1 電流磁效應 ／ 4-2 電磁感應）<br>
+            （第3～9堂內容）
+          </div>
+        </div>
+      </div>
+
+      <!-- 期末考 -->
+      <div style="border-radius:10px;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,0.07);">
+        <div style="background:#5b21b6;padding:10px 16px;display:flex;align-items:center;gap:8px;">
+          <span style="font-size:18px;">🎓</span>
+          <span style="font-family:'Noto Serif TC',serif;font-size:14px;font-weight:700;color:#fff;letter-spacing:0.05em;">期末考</span>
+        </div>
+        <div style="background:#f5f3ff;padding:14px 16px;">
+          <div style="font-size:20px;font-weight:700;color:#5b21b6;font-family:'Noto Serif TC',serif;margin-bottom:4px;">2026/6/26 ～ 6/30</div>
+          <div style="font-size:12px;color:#7c4db8;margin-bottom:10px;">考試前最後一堂：第16堂（6/21）</div>
+          <div style="font-size:12px;color:#4c1d95;background:#ede9fe;border-radius:6px;padding:8px 10px;line-height:1.6;">
+            <strong>考試範圍：</strong>第4章（4-3～4-5）電磁統合・光波・都卜勒 ／ 第5章 能量 ／ 第6章 量子現象<br>
+            （第10～16堂內容）
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Timeline bar -->
+    <div style="margin-top:20px;position:relative;padding:0 0 0 0;">
+      <div style="font-size:12px;color:#8888a8;margin-bottom:8px;font-weight:500;">學期時間軸</div>
+      <div style="display:flex;align-items:center;gap:0;font-size:11px;color:#fff;font-weight:600;">
+        <div style="background:#4a4a6a;border-radius:6px 0 0 6px;padding:5px 10px;white-space:nowrap;">3/8 開學</div>
+        <div style="flex:1.2;background:#e8f1fb;height:6px;"></div>
+        <div style="background:#c2410c;padding:5px 10px;white-space:nowrap;">段考①<br><span style="font-size:10px;opacity:0.9;">3/31</span></div>
+        <div style="flex:2;background:#fef0dc;height:6px;"></div>
+        <div style="background:#1e40af;padding:5px 10px;white-space:nowrap;">段考②<br><span style="font-size:10px;opacity:0.9;">5/14</span></div>
+        <div style="flex:2;background:#ede9fe;height:6px;"></div>
+        <div style="background:#1c1c2e;padding:5px 10px;white-space:nowrap;">最終課<br><span style="font-size:10px;opacity:0.9;">6/21</span></div>
+        <div style="flex:0.5;background:#e0e0ee;height:6px;"></div>
+        <div style="background:#5b21b6;border-radius:0 6px 6px 0;padding:5px 10px;white-space:nowrap;">期末考<br><span style="font-size:10px;opacity:0.9;">6/26</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ════════════════ 第1章 ════════════════ -->
+<div class="ch-divider">
+  <div class="ch-divider-badge" style="background:#e8f1fb;color:#1a56a0">第 1 章　科學的態度與方法</div>
+</div>
+
+<!-- 第1堂 -->
+<div class="lesson ch1">
+  <div class="lesson-header">
+    <div class="lesson-num"><span class="wk">第</span><span class="n">1</span><span class="u">堂</span></div>
+    <div class="lesson-title-block">
+      <div class="lesson-meta">
+        <span>2026/3/8（日）</span>
+        <span class="ch-tag">第1章</span>
+        <span>1-1 科學的態度 ／ 1-2 科學的方法</span>
+      </div>
+      <div class="lesson-title">科學的態度與方法（上）</div>
+    </div>
+  </div>
+
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📌</div><div class="label-text">教學要項</div></div>
+    <div class="row-content">
+      <div class="points">
+        <div class="point">
+          <div class="point-num">1</div>
+          <div>
+            <div class="point-text"><strong>科學的基本態度：</strong>客觀（排除個人偏見）、懷疑（對既有知識保持質疑）、開放（接受新證據修正觀點）與誠實（如實記錄與報告）；科學家面對不確定性時如何處理與溝通</div>
+          </div>
+        </div>
+        <div class="point">
+          <div class="point-num">2</div>
+          <div>
+            <div class="point-text"><strong>科學方法五步驟：</strong>觀察現象 → 提出問題 → 建立假設 → 實驗驗證 → 分析結論；每一步驟的具體意涵與實例</div>
+            <div class="point-sub">強調「可重複性」：同一實驗在不同地點、不同人操作，結果應一致，這是科學知識與個人意見的根本區別</div>
+          </div>
+        </div>
+        <div class="point">
+          <div class="point-num">3</div>
+          <div>
+            <div class="point-text"><strong>歸納法 vs 演繹法：</strong>歸納（由多個具體個例推出一般通則，例如：觀察百次日出推出「太陽每天東升」）；演繹（由已知通則推出具體預測，例如：由萬有引力定律預測海王星位置）</div>
+          </div>
+        </div>
+        <div class="point">
+          <div class="point-num">4</div>
+          <div>
+            <div class="point-text"><strong>實驗設計的變因控制：</strong>自變項（主動改變的條件）、應變項（被觀測的結果）、控制變項（需固定不變的其他條件）；三者混淆是實驗設計最常見的錯誤</div>
+            <div class="point-sub">例：探討溫度對溶解速率的影響 → 自：水溫；應：溶解時間；控：糖的種類/量、水量、攪拌方式</div>
+          </div>
+        </div>
+        <div class="point">
+          <div class="point-num">5</div>
+          <div>
+            <div class="point-text"><strong>科學模型的本質：</strong>模型是對現實的「有目的的簡化描述」，非完美複製；好模型在特定條件下有強大預測力，並在遇到反例時被修正或取代（例：原子模型的演進）</div>
+          </div>
+        </div>
+        <div class="point">
+          <div class="point-num">6</div>
+          <div>
+            <div class="point-text"><strong>「理論」與「假說」的層次區別：</strong>假說是尚待驗證的初步解釋；理論是經過大量實驗支持、具高度解釋力的系統性知識框架（如演化論、原子論）——「只是一個理論」是常見的誤解</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📝</div><div class="label-text">課堂總結</div></div>
+    <div class="row-content">
+      <div class="summary-text">物理學是以實驗與邏輯推理為核心的自然科學。本堂的目標是為整個學期建立「科學思維」的基礎框架——從學生熟悉的日常現象出發，學習如何系統性地提問、設計可驗證的實驗、解讀數據，並認識科學知識的暫時性與進化性。科學的態度不是「相信書上說的」，而是「依據證據做出最合理的判斷，並隨時準備在新證據面前修正」。這種思維習慣，是後續所有章節的方法論根基，也是公民科學素養的核心。</div>
+    </div>
+  </div>
+
+  <div class="section-row">
+    <div class="row-label"><div class="icon">💡</div><div class="label-text">教學要訣</div></div>
+    <div class="row-content">
+      <div class="tips">
+        <div class="tip"><div class="tip-icon">🔵</div><div class="tip-text">開課破冰：用「為什麼天空是藍色的？」「為什麼吸管插進水裡看起來是彎的？」引發討論，帶入科學提問的思路——先讓學生猜，再說明如何驗證</div></div>
+        <div class="tip"><div class="tip-icon">🔵</div><div class="tip-text">強調科學方法不只在實驗室有用，也是日常批判性思考的工具：如何判斷新聞真假、廣告是否可信，都需要「要求證據」的習慣</div></div>
+        <div class="tip"><div class="tip-icon">🔵</div><div class="tip-text">釐清「假設」與「猜測」的不同：假設是<strong>可被實驗驗證、並可被否定</strong>的陳述；「鬼魂存在」無法被實驗否定，因此不是科學假設，而是信仰問題</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 第2堂 -->
+<div class="lesson ch1">
+  <div class="lesson-header">
+    <div class="lesson-num"><span class="wk">第</span><span class="n">2</span><span class="u">堂</span></div>
+    <div class="lesson-title-block">
+      <div class="lesson-meta"><span>2026/3/15（日）</span><span class="ch-tag">第1章</span><span>1-3 物理學簡介 ／ 國際單位制（SI）</span></div>
+      <div class="lesson-title">科學的態度與方法（下）</div>
+    </div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📌</div><div class="label-text">教學要項</div></div>
+    <div class="row-content"><div class="points">
+      <div class="point"><div class="point-num">1</div><div><div class="point-text"><strong>物理學的分支與本冊架構：</strong>力學（第3章）、電磁學（第4章）、熱學與能量（第5章）、近代物理（第6章）——讓學生一開始就看到整學期的「地圖」</div></div></div>
+      <div class="point"><div class="point-num">2</div><div><div class="point-text"><strong>國際單位制（SI）七個基本量：</strong>長度(m)、質量(kg)、時間(s)、電流(A)、熱力學溫度(K)、物質量(mol)、發光強度(cd)；匯出單位的概念（速度 m/s、力 N = kg·m/s²）</div></div></div>
+      <div class="point"><div class="point-num">3</div><div><div class="point-text"><strong>科學記號與數量級：</strong>從 10⁻¹⁵（費米，核子尺度）到 10²⁶（可觀測宇宙），培養對極大極小數量的量感；前綴詞 nano/micro/milli/kilo/mega/giga 的換算</div></div></div>
+      <div class="point"><div class="point-num">4</div><div><div class="point-text"><strong>有效數字規則：</strong>非零數字必計；夾在非零數字之間的零必計；小數點後尾零必計；整數尾零視情況而定——測量精確度由儀器決定，計算結果不能憑空增加精確位數</div><div class="point-sub">加減法：以小數點後位數最少者為準；乘除法：以有效數字位數最少者為準</div></div></div>
+      <div class="point"><div class="point-num">5</div><div><div class="point-text"><strong>量綱分析：</strong>用單位一致性快速驗證公式的合理性。例：速度＝距離÷時間 → m÷s = m/s ✓；動能 = ½mv² → kg×(m/s)² = kg·m²/s² = J ✓</div></div></div>
+    </div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📝</div><div class="label-text">課堂總結</div></div>
+    <div class="row-content"><div class="summary-text">本堂以「物理學的地圖」視角讓學生縱覽整學期課程骨架，再聚焦於量測的共同語言——SI單位制與有效數字。有效數字常被學生視為雞肋，實為所有計算題的精確度地基；量綱分析則是自我驗算公式的強大工具，工程師與科學家每天都在用。培養「看到數字先想單位」的習慣，是從國中到高中物理的重要跨越。</div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">💡</div><div class="label-text">教學要訣</div></div>
+    <div class="row-content"><div class="tips">
+      <div class="tip"><div class="tip-icon">🟢</div><div class="tip-text">用身體當尺快速建立量感：指甲寬 ≈ 1 cm、手掌寬 ≈ 10 cm、手臂展開 ≈ 1.7 m；頭髮直徑 ≈ 70 μm，讓學生用顯微鏡驗證</div></div>
+      <div class="tip"><div class="tip-icon">🟢</div><div class="tip-text">有效數字口訣：「非零必計、夾零必計、尾零看情況」；用計算機算完後問學生「應該寫幾位？」養成習慣</div></div>
+      <div class="tip"><div class="tip-icon">🟢</div><div class="tip-text">量綱分析挑戰題：讓學生驗算「動能 = ½mv²」和「重力位能 = mgh」的單位，確認都等於焦耳（J），感受量綱分析的威力</div></div>
+    </div></div>
+  </div>
+</div>
+
+<!-- ════════════════ 第2章 ════════════════ -->
+<div class="ch-divider">
+  <div class="ch-divider-badge" style="background:#e4f5ec;color:#1a7a45">第 2 章　物質的組成與交互作用</div>
+</div>
+
+<!-- 第3堂 -->
+<div class="lesson ch2">
+  <div class="lesson-header">
+    <div class="lesson-num"><span class="wk">第</span><span class="n">3</span><span class="u">堂</span></div>
+    <div class="lesson-title-block">
+      <div class="lesson-meta"><span>2026/3/22（日）</span><span class="ch-tag">第2章</span><span>2-1 物質的組成</span></div>
+      <div class="lesson-title">物質的組成（上）</div>
+    </div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📌</div><div class="label-text">教學要項</div></div>
+    <div class="row-content"><div class="points">
+      <div class="point"><div class="point-num">1</div><div><div class="point-text"><strong>物質的層次結構（由大到小）：</strong>宏觀物質 → 分子 → 原子 → 原子核（質子＋中子）→ 夸克；每個層次的尺度量級（cm → nm → fm）與對應的研究工具</div></div></div>
+      <div class="point"><div class="point-num">2</div><div><div class="point-text"><strong>元素、化合物、混合物的物理學觀點：</strong>以組成粒子的種類與排列加以區分；純物質的微觀均一性 vs 混合物的宏觀均勻但微觀不同</div></div></div>
+      <div class="point"><div class="point-num">3</div><div><div class="point-text"><strong>同位素：</strong>同種元素（質子數相同）、中子數不同 → 質量數不同但化學性質幾乎相同；天然豐度的概念（氯-35佔75%、氯-37佔25%）</div><div class="point-sub">放射性同位素應用：碳-14定年（考古）、碘-131甲狀腺治療、鈷-60放射治療、氚用於核融合</div></div></div>
+      <div class="point"><div class="point-num">4</div><div><div class="point-text"><strong>物質三態的微觀解釋：</strong>固態（粒子排列規則、振動）、液態（粒子移動但仍緊密）、氣態（粒子快速隨機運動）——態的轉變是粒子動能與位能競爭的結果</div></div></div>
+      <div class="point"><div class="point-num">5</div><div><div class="point-text"><strong>原子質量單位(u)：</strong>定義為碳-12質量的1/12，即 1 u = 1.66 × 10⁻²⁷ kg；與莫耳(mol)的關係：1 mol = 6.02 × 10²³ 個粒子（亞佛加厥常數）</div></div></div>
+    </div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📝</div><div class="label-text">課堂總結</div></div>
+    <div class="row-content"><div class="summary-text">本章從「物質究竟是什麼」出發，縱貫宏觀到次原子的尺度層次。本堂重點在建立「物質有精細結構」的核心觀念，連結學生在國中化學已有的原子概念，並向下延伸至夸克層次。同位素概念在此奠基，將在第5章核能課（核分裂、核融合、質能等效）中再度深化。物質三態的微觀解釋則為第5章熱能與能量守恆鋪路。</div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">💡</div><div class="label-text">教學要訣</div></div>
+    <div class="row-content"><div class="tips">
+      <div class="tip"><div class="tip-icon">🟤</div><div class="tip-text">尺度比較視覺化：若把原子放大到足球場大小（直徑 100 m），原子核只有一顆彈珠（1 cm）那麼小，但質量卻佔 99.97%——讓學生感受原子內部的「空曠」</div></div>
+      <div class="tip"><div class="tip-icon">🟤</div><div class="tip-text">同位素連結生活：碳-14的半衰期 5730 年，考古學家用它推算古埃及木乃伊年齡；讓學生計算「經過兩個半衰期，剩下多少碳-14？」（答：1/4）</div></div>
+      <div class="tip"><div class="tip-icon">🟤</div><div class="tip-text">釐清易混淆點：「原子量」是考慮天然豐度後的加權平均質量，不是某一同位素的精確質量；氯的原子量 35.5 介於 35 和 37 之間，並非第三種同位素</div></div>
+    </div></div>
+  </div>
+</div>
+
+<!-- 第4堂 -->
+<div class="lesson ch2">
+  <div class="lesson-header">
+    <div class="lesson-num"><span class="wk">第</span><span class="n">4</span><span class="u">堂</span></div>
+    <div class="lesson-title-block">
+      <div class="lesson-meta"><span>2026/3/29（日）</span><span class="ch-tag">第2章</span><span>2-2 原子的尺度與結構 ／ 2-3 物質間的基本交互作用</span></div>
+      <div class="lesson-title">物質的組成（下）</div>
+    </div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📌</div><div class="label-text">教學要項</div></div>
+    <div class="row-content"><div class="points">
+      <div class="point"><div class="point-num">1</div><div><div class="point-text"><strong>原子模型的歷史演進：</strong>道耳頓（實心球）→ 湯姆森（葡萄乾布丁，電子嵌入正電球體）→ 拉塞福（核式模型，金箔散射實驗）→ 波耳（量子化軌道，能階概念）→ 現代量子力學（電子雲/機率密度）</div></div></div>
+      <div class="point"><div class="point-num">2</div><div><div class="point-text"><strong>拉塞福金箔散射實驗詳解：</strong>α粒子轟擊金箔，大部分穿透但少數大角度偏折甚至反彈 → 原子中心有極小、極緻密、帶正電的核；此為近代物理最重要的實驗之一</div></div></div>
+      <div class="point"><div class="point-num">3</div><div><div class="point-text"><strong>核外電子的排列：</strong>電子殼層（K、L、M…）與最大容納電子數（2n²）；最外層電子即價電子，決定元素的化學活性（連結第6章波耳原子模型與能階躍遷）</div></div></div>
+      <div class="point"><div class="point-num">4</div><div><div class="point-text"><strong>四種基本交互作用比較：</strong></div><div class="point-sub">・重力：最弱（相對強度10⁻³⁸），無限遠，作用於所有有質量的物體<br>・電磁力：強（10⁻²），無限遠，主宰日常生活中的所有接觸力<br>・強核力：最強（1），極短程（10⁻¹⁵ m），束縛核子（對抗質子間的電磁排斥）<br>・弱核力：弱（10⁻⁵），極短程，引起放射性β衰變</div></div></div>
+      <div class="point"><div class="point-num">5</div><div><div class="point-text"><strong>電荷守恆定律：</strong>孤立系統中，總電荷量不變；正負電荷可以產生或湮滅，但必須成對出現（正電子-電子對）——是自然界最嚴格的守恆律之一</div></div></div>
+    </div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📝</div><div class="label-text">課堂總結</div></div>
+    <div class="row-content"><div class="summary-text">本堂從歷史視角串聯原子模型的演進，體現科學知識如何在實驗衝擊下不斷修正——這本身就是科學方法（第1章）的最佳示範。四種基本力是整部物理學的「骨架」：重力支配天體運行（第3章），電磁力主宰日常物質與光（第4章），強核力鎖住原子核（第5章核能），弱核力引發放射衰變（同第5章）。本堂讓學生在尚未深入各章之前，先建立這個大圖景。</div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">💡</div><div class="label-text">教學要訣</div></div>
+    <div class="row-content"><div class="tips">
+      <div class="tip"><div class="tip-icon">🟤</div><div class="tip-text">拉塞福散射：用比喻幫助理解——「如果朝棉花糖射子彈，子彈應該直接穿過；但有幾顆彈回來了，所以棉花糖裡有個極硬的核！」這讓學生感受實驗推理的震撼</div></div>
+      <div class="tip"><div class="tip-icon">🟤</div><div class="tip-text">強調電磁力的主導地位：我們走路時腳踏地面，感受到的「地板反推力」不是重力，而是分子間的電磁排斥力；我們平時感受到的所有接觸力，本質都是電磁力</div></div>
+      <div class="tip"><div class="tip-icon">🟤</div><div class="tip-text">留懸念：「強核力可以把帶正電的質子束縛在一起，那如果把核打碎，釋放的能量有多大？」——引出第5章質能等效 E=mc² 的伏筆</div></div>
+    </div></div>
+  </div>
+</div>
+
+<!-- ════════════════ 第3章 ════════════════ -->
+<div class="ch-divider">
+  <div class="ch-divider-badge" style="background:#fdf0dc;color:#a05c10">第 3 章　物體的運動</div>
+</div>
+
+<!-- 第5堂 -->
+<div class="lesson ch3">
+  <div class="lesson-header">
+    <div class="lesson-num"><span class="wk">第</span><span class="n">5</span><span class="u">堂</span></div>
+    <div class="lesson-title-block">
+      <div class="lesson-meta"><span>2026/4/5（日）</span><span class="ch-tag">第3章</span><span>3-1 對物體運動的描述</span></div>
+      <div class="lesson-title">物體的運動（一）：描述運動</div>
+    </div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📌</div><div class="label-text">教學要項</div></div>
+    <div class="row-content"><div class="points">
+      <div class="point"><div class="point-num">1</div><div><div class="point-text"><strong>位置與位移：</strong>位移是向量（有大小、有方向，如「往東走 5 m」），路徑長是純量（如「走了 7 m 的彎路」）；兩者在直線運動同向時數值相等，但概念截然不同，不可混用</div></div></div>
+      <div class="point"><div class="point-num">2</div><div><div class="point-text"><strong>速度與速率的精確定義：</strong>瞬時速度 v = lim(Δx/Δt)；平均速度 = 位移 ÷ 時間；平均速率 = 路徑長 ÷ 時間；三者在一般情況下數值不同，需視題意選擇</div></div></div>
+      <div class="point"><div class="point-num">3</div><div><div class="point-text"><strong>x-t 圖與 v-t 圖的解讀：</strong>x-t 圖的斜率 = 速度；v-t 圖的斜率 = 加速度；v-t 圖與時間軸圍成的面積 = 位移——三個關係是圖解運動學的核心</div></div></div>
+      <div class="point"><div class="point-num">4</div><div><div class="point-text"><strong>等加速度運動的五個公式：</strong>v = v₀ + at；x = v₀t + ½at²；v² = v₀² + 2ax；x = ½(v₀+v)t；x = vt - ½at²</div><div class="point-sub">選題策略：「缺哪個量，就找不含它的那條公式」；初速、末速、加速度、位移、時間五量中已知三求一或二</div></div></div>
+      <div class="point"><div class="point-num">5</div><div><div class="point-text"><strong>自由落體：</strong>地表附近忽略空氣阻力時，所有物體加速度皆為 g ≈ 9.8 m/s²（取10方便計算）；重力加速度的方向永遠向下，與物體初速方向無關</div></div></div>
+      <div class="point"><div class="point-num">6</div><div><div class="point-text"><strong>加速度的正負意義：</strong>正負代表方向（相對於所選正方向），而非「加速」或「減速」；加速度與速度同向才是加速，反向才是減速——「負加速度不等於在減速」是高頻易錯點</div></div></div>
+    </div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📝</div><div class="label-text">課堂總結</div></div>
+    <div class="row-content"><div class="summary-text">運動學是整個力學的語言基礎——必須先「描述」運動，才能在下一堂「解釋」運動。本堂核心在建立位移、速度、加速度三個向量概念的清晰區分，並熟練等加速度五公式的選擇策略。x-t 圖與 v-t 圖的斜率意義是學生最常搞混的學測考點，建議本堂至少花三分之一時間在圖形解讀練習上，打下紮實基礎。</div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">💡</div><div class="label-text">教學要訣</div></div>
+    <div class="row-content"><div class="tips">
+      <div class="tip"><div class="tip-icon">🟡</div><div class="tip-text">圖形三句話反覆強調：「x-t 斜率＝速度；v-t 斜率＝加速度；v-t 面積＝位移」，每節課開頭當作口訣複習，期末前仍要能脫口而出</div></div>
+      <div class="tip"><div class="tip-icon">🟡</div><div class="tip-text">自由落體打破直覺：亞里斯多德認為重的物體落得快，伽利略用實驗否定了他。播放羽毛與保齡球在真空管中同時落地的影片，讓學生親眼見到</div></div>
+      <div class="tip"><div class="tip-icon">🟡</div><div class="tip-text">⚠️ 4/5 兒童節請確認當週是否上課；若停課則後面各堂日期整體順延一週，最末堂落在 6/28</div></div>
+    </div></div>
+  </div>
+</div>
+
+<!-- 第6堂 -->
+<div class="lesson ch3">
+  <div class="lesson-header">
+    <div class="lesson-num"><span class="wk">第</span><span class="n">6</span><span class="u">堂</span></div>
+    <div class="lesson-title-block">
+      <div class="lesson-meta"><span>2026/4/12（日）</span><span class="ch-tag">第3章</span><span>3-2 牛頓運動定律——運動的原因</span></div>
+      <div class="lesson-title">物體的運動（二）：牛頓運動定律</div>
+    </div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📌</div><div class="label-text">教學要項</div></div>
+    <div class="row-content"><div class="points">
+      <div class="point"><div class="point-num">1</div><div><div class="point-text"><strong>牛頓第一定律（慣性定律）：</strong>合力為零時，物體保持靜止或等速直線運動；慣性大小與質量成正比；重要推論：「力不是維持運動的原因，力是改變運動狀態的原因」</div></div></div>
+      <div class="point"><div class="point-num">2</div><div><div class="point-text"><strong>牛頓第二定律 F = ma：</strong>合力決定加速度的大小與方向（F 與 a 同向）；質量是慣性大小的度量；注意 F 為「合力」，必須先做受力分析（FBD）</div></div></div>
+      <div class="point"><div class="point-num">3</div><div><div class="point-text"><strong>牛頓第三定律（作用力與反作用力）：</strong>兩力等大反向，且作用在<u>不同物體</u>上；必須是<u>同種類的力</u>（都是重力、或都是正向力…）——常見錯誤：把「合力為零」的兩個力誤認為第三定律對</div></div></div>
+      <div class="point"><div class="point-num">4</div><div><div class="point-text"><strong>受力圖（FBD）標準畫法：</strong>將物體視為質點，畫出所有作用於其上的力（重力mg↓、正向力N↑、摩擦力f←→、繩張力T、彈力…），不畫該物體施加給其他物體的力</div></div></div>
+      <div class="point"><div class="point-num">5</div><div><div class="point-text"><strong>靜摩擦力與動摩擦力：</strong>靜摩擦力是反應力（0 ≤ f_s ≤ μ_s N），隨外力增大而增大直到最大靜摩擦力；動摩擦力 f_k = μ_k N 為定值（μ_k < μ_s）；物體剛開始運動的臨界條件</div></div></div>
+      <div class="point"><div class="point-num">6</div><div><div class="point-text"><strong>視重（apparent weight）：</strong>電梯加速向上 → N = m(g+a) > mg（感覺變重）；加速向下 → N = m(g-a) < mg（感覺變輕）；自由落體 → N = 0（失重）；超重與失重的本質是正向力的改變</div></div></div>
+    </div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📝</div><div class="label-text">課堂總結</div></div>
+    <div class="row-content"><div class="summary-text">本堂是整個力學的核心轉折——從上一堂的「描述運動」轉為「解釋運動的原因」。牛頓三大定律中，第三定律（作用力與反作用力）是學生最常犯錯的地方：它們作用在不同物體，因此不能相互抵消。受力圖是解所有力學題的第一步，養成先畫 FBD 的習慣，勝過死背公式。視重概念則連結日常電梯體驗，讓抽象的正向力變得直觀真實。</div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">💡</div><div class="label-text">教學要訣</div></div>
+    <div class="row-content"><div class="tips">
+      <div class="tip"><div class="tip-icon">🟡</div><div class="tip-text">第三定律最易混淆的兩組力：「書壓桌（重力）＋桌撐書（正向力）」是第三定律對；而「書的重力＋桌給書的正向力」是第一定律（合力為零）——這兩組是不同的配對，必須反覆區分</div></div>
+      <div class="tip"><div class="tip-icon">🟡</div><div class="tip-text">解題 SOP 四步：①畫 FBD ②設定正方向 ③列 ΣF = ma ④解代數——讓學生每次解題都照這四步，成為反射動作</div></div>
+      <div class="tip"><div class="tip-icon">🟡</div><div class="tip-text">電梯實驗：讓學生在電梯裡站在體重計上，記錄上升加速、勻速、減速時的數值，課後分享——這個生活實驗讓視重概念從抽象變具體</div></div>
+    </div></div>
+  </div>
+</div>
+
+<!-- 第7堂 -->
+<div class="lesson ch3">
+  <div class="lesson-header">
+    <div class="lesson-num"><span class="wk">第</span><span class="n">7</span><span class="u">堂</span></div>
+    <div class="lesson-title-block">
+      <div class="lesson-meta"><span>2026/4/19（日）</span><span class="ch-tag">第3章</span><span>3-3 天體運動</span></div>
+      <div class="lesson-title">物體的運動（三）：天體運動</div>
+    </div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📌</div><div class="label-text">教學要項</div></div>
+    <div class="row-content"><div class="points">
+      <div class="point"><div class="point-num">1</div><div><div class="point-text"><strong>克卜勒三大定律：</strong>①橢圓軌道（太陽在一個焦點）②等面積定律（近日點快、遠日點慢，角動量守恆的體現）③調和定律（T² ∝ a³，週期平方正比半長軸三次方）</div></div></div>
+      <div class="point"><div class="point-num">2</div><div><div class="point-text"><strong>萬有引力定律：</strong>F = GMm/r²，與距離平方成反比；G = 6.67 × 10⁻¹¹ N·m²/kg²；兩物體彼此吸引，力大小相等（第三定律），地球吸引月球的力 = 月球吸引地球的力</div></div></div>
+      <div class="point"><div class="point-num">3</div><div><div class="point-text"><strong>圓周運動的向心加速度：</strong>a_c = v²/r = (2πr/T)²/r = 4π²r/T²，方向指向圓心；向心力是合力提供的效果，非獨立的力（不能畫在 FBD 上）</div></div></div>
+      <div class="point"><div class="point-num">4</div><div><div class="point-text"><strong>衛星速度推導：</strong>由 GMm/r² = mv²/r，得 v = √(GM/r)——軌道愈高，速度愈慢；近地軌道（r≈R地）速度 ≈ 7.9 km/s（第一宇宙速度）</div></div></div>
+      <div class="point"><div class="point-num">5</div><div><div class="point-text"><strong>逃逸速度：</strong>v_esc = √(2GM/R)，物體從地球表面逃脫重力束縛所需的最小速度 ≈ 11.2 km/s（第二宇宙速度）；黑洞的概念：連光都無法逃逸的天體</div></div></div>
+    </div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📝</div><div class="label-text">課堂總結</div></div>
+    <div class="row-content"><div class="summary-text">天體運動是牛頓力學最壯觀的成就——同一個 F = ma，既能解釋蘋果落地，又能預測彗星回歸。克卜勒用觀測資料歸納出三大定律，牛頓用萬有引力演繹出相同結果，這是歸納與演繹完美融合的科學典範（呼應第1章）。本堂讓學生感受物理定律的宇宙尺度，並能定量推導衛星速度，是運動學的完美收尾。</div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">💡</div><div class="label-text">教學要訣</div></div>
+    <div class="row-content"><div class="tips">
+      <div class="tip"><div class="tip-icon">🟡</div><div class="tip-text">搭配 PhET「重力與軌道」免費模擬：讓學生自行拖曳調整行星質量與距離，觀察週期如何變化，直觀驗證克卜勒第三定律</div></div>
+      <div class="tip"><div class="tip-icon">🟡</div><div class="tip-text">克卜勒第三定律數據驗算：提供八大行星的半長軸與週期表，讓學生計算 T²/a³ 並確認各行星比值接近，感受定律的精確性</div></div>
+      <div class="tip"><div class="tip-icon">🟡</div><div class="tip-text">留伏筆：「衛星再快一點會怎樣？」→ 逃逸速度 → 黑洞；「如果重力不是平方反比而是三次方，軌道還是穩定的嗎？」→ 引出廣義相對論的前夜話題</div></div>
+    </div></div>
+  </div>
+</div>
+
+<!-- ════════════════ 第4章 ════════════════ -->
+<div class="ch-divider">
+  <div class="ch-divider-badge" style="background:#fce7f3;color:#991c5e">第 4 章　電與磁的統一</div>
+</div>
+
+<!-- 第8-11堂 condensed for brevity, same structure -->
+<div class="lesson ch4">
+  <div class="lesson-header">
+    <div class="lesson-num"><span class="wk">第</span><span class="n">8</span><span class="u">堂</span></div>
+    <div class="lesson-title-block">
+      <div class="lesson-meta"><span>2026/4/26（日）</span><span class="ch-tag">第4章</span><span>4-1 電流的磁效應 ／ ▶ 示範實驗：載流導線的磁效應</span></div>
+      <div class="lesson-title">電與磁（一）：電流的磁效應</div>
+    </div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📌</div><div class="label-text">教學要項</div></div>
+    <div class="row-content"><div class="points">
+      <div class="point"><div class="point-num">1</div><div><div class="point-text"><strong>奧斯特實驗（1820）的歷史意義：</strong>電流旁的指南針偏轉，首次證明電與磁不是各自獨立的現象，開啟了19世紀電磁學革命；強調「意外發現」在科學中的重要性</div></div></div>
+      <div class="point"><div class="point-num">2</div><div><div class="point-text"><strong>長直導線的磁場：</strong>右手定則一——大拇指指電流方向，四指彎曲方向即磁場方向；磁場為同心圓，強度與距離成反比（B ∝ I/r）</div></div></div>
+      <div class="point"><div class="point-num">3</div><div><div class="point-text"><strong>安培定律（概念層次）：</strong>沿封閉迴路的磁場線積分與通過其內的電流成正比；用於計算具有對稱性的磁場（無限長直線、螺線管內部）</div></div></div>
+      <div class="point"><div class="point-num">4</div><div><div class="point-text"><strong>螺線管的磁場：</strong>密繞圓柱線圈，內部磁場均勻（類似條形磁鐵），外部磁場弱；右手定則二——四指握線圈表示電流繞向，姆指指向 N 極</div></div></div>
+      <div class="point"><div class="point-num">5</div><div><div class="point-text"><strong>電磁鐵與應用：</strong>插入鐵芯可大幅增強磁場（鐵芯的磁導率遠大於空氣）；電動機、揚聲器、MRI（磁振造影）、電磁門鎖、磁浮列車的基本工作原理</div></div></div>
+    </div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📝</div><div class="label-text">課堂總結</div></div>
+    <div class="row-content"><div class="summary-text">本章是電磁學統一的起點。奧斯特的「意外發現」（他原本只是在演講中做實驗，才偶然注意到指南針偏轉）提醒學生：保持觀察與好奇心，意外發現可能改變整個科學。示範實驗是本堂靈魂，電流方向改變→指南針反向偏轉，這個瞬間直觀衝擊遠超任何文字描述。右手定則是整個電磁學最頻繁使用的工具，務必確保每位學生都能正確操作。</div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">💡</div><div class="label-text">教學要訣</div></div>
+    <div class="row-content"><div class="tips">
+      <div class="tip"><div class="tip-icon">🔴</div><div class="tip-text">▶ 示範實驗重點：讓學生先預測「電流方向改變，指南針會怎樣？」再操作驗證；調大電流，觀察偏轉角增大——強化磁場強度與電流成正比的概念</div></div>
+      <div class="tip"><div class="tip-icon">🔴</div><div class="tip-text">右手定則是高頻考點：讓每位學生用自己的右手比劃，現場糾錯；考試時允許比手勢，但要確保動作正確而非猜測</div></div>
+      <div class="tip"><div class="tip-icon">🔴</div><div class="tip-text">磁場是向量，有大小有方向；磁力線的疏密代表場的強弱——用場線圖讓學生「看見」無形的磁場，建立空間感</div></div>
+    </div></div>
+  </div>
+</div>
+
+<div class="lesson ch4">
+  <div class="lesson-header">
+    <div class="lesson-num"><span class="wk">第</span><span class="n">9</span><span class="u">堂</span></div>
+    <div class="lesson-title-block">
+      <div class="lesson-meta"><span>2026/5/3（日）</span><span class="ch-tag">第4章</span><span>4-2 電磁感應 ／ ▶ 示範實驗：電磁感應</span></div>
+      <div class="lesson-title">電與磁（二）：電磁感應</div>
+    </div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📌</div><div class="label-text">教學要項</div></div>
+    <div class="row-content"><div class="points">
+      <div class="point"><div class="point-num">1</div><div><div class="point-text"><strong>法拉第電磁感應定律（1831）：</strong>感應電動勢 ε = -ΔΦ/Δt；磁通量 Φ = B·A·cosθ——B 強度、面積 A、磁場與面法線夾角 θ 三個因素都能引起磁通量變化，進而產生感應電流</div></div></div>
+      <div class="point"><div class="point-num">2</div><div><div class="point-text"><strong>楞次定律（確定感應電流方向）：</strong>感應電流所產生的磁場，方向必定「反對」引起感應的磁通量變化；本質是能量守恆——若感應電流幫助磁通量增加，就能無限生成能量，違反能量守恆</div><div class="point-sub">判斷步驟：①原磁通量增加還是減少？②感應磁場應與原磁場同向（減少時）或反向（增加時）③用右手定則定電流繞向</div></div></div>
+      <div class="point"><div class="point-num">3</div><div><div class="point-text"><strong>感應電動勢的三種產生方式：</strong>①改變 B 的大小（磁場強弱變化）②改變 A（線圈面積變化或進出磁場）③改變 θ（線圈旋轉，發電機原理）</div></div></div>
+      <div class="point"><div class="point-num">4</div><div><div class="point-text"><strong>發電機原理：</strong>線圈在均勻磁場中旋轉 → θ 週期性變化 → 磁通量週期變化 → 感應電動勢做正弦函數振盪 → 交流電（AC）的來源</div></div></div>
+      <div class="point"><div class="point-num">5</div><div><div class="point-text"><strong>變壓器原理（理想變壓器）：</strong>利用交流電在原線圈產生交變磁通量，透過鐵芯傳遞到副線圈感應出電壓；V₁/V₂ = N₁/N₂；功率守恆：V₁I₁ = V₂I₂（升壓→降流，降壓→升流）</div></div></div>
+    </div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📝</div><div class="label-text">課堂總結</div></div>
+    <div class="row-content"><div class="summary-text">法拉第的「磁生電」是馬達、發電機、變壓器、無線充電所有電力文明的基礎。楞次定律看似複雜，本質是能量守恆定律在電磁學的體現——記住這個物理本質，就不需要死記規則。示範實驗（磁棒插入線圈）是本章最直觀的教學工具，讓學生親眼見到指針偏轉，再預測拔出時的方向，建立主動推理的習慣。</div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">💡</div><div class="label-text">教學要訣</div></div>
+    <div class="row-content"><div class="tips">
+      <div class="tip"><div class="tip-icon">🔴</div><div class="tip-text">▶ 示範實驗設計：磁棒插入 vs 抽出、快插 vs 慢插（電流大小不同）——每次操作前讓學生<strong>先預測</strong>電流方向，再驗證，培養主動思考習慣</div></div>
+      <div class="tip"><div class="tip-icon">🔴</div><div class="tip-text">楞次定律的能量本質：「如果感應電流幫助磁通量增加，就可以無中生有地造出能量，這違反能量守恆——所以感應電流一定是反對的」，用反證法讓學生記住方向</div></div>
+      <div class="tip"><div class="tip-icon">🔴</div><div class="tip-text">連結生活：手機無線充電（Qi 標準）是電磁感應；電磁爐的鍋底渦流產生熱量；信用卡感應付款——讓物理從黑板走進口袋</div></div>
+    </div></div>
+  </div>
+</div>
+
+<div class="lesson ch4">
+  <div class="lesson-header">
+    <div class="lesson-num"><span class="wk">第</span><span class="n">10</span><span class="u">堂</span></div>
+    <div class="lesson-title-block">
+      <div class="lesson-meta"><span>2026/5/10（日）</span><span class="ch-tag">第4章</span><span>4-3 電與磁的整合 ／ 4-4 光波 ／ ▶ 示範實驗：雙狹縫干涉</span></div>
+      <div class="lesson-title">電與磁（三）：電磁統合與光波</div>
+    </div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📌</div><div class="label-text">教學要項</div></div>
+    <div class="row-content"><div class="points">
+      <div class="point"><div class="point-num">1</div><div><div class="point-text"><strong>馬克斯威爾方程組（概念層次）：</strong>變化的電場產生磁場（位移電流），變化的磁場產生電場——兩者交替激盪可在真空中自行傳播，無需介質，這就是「電磁波」的理論基礎</div></div></div>
+      <div class="point"><div class="point-num">2</div><div><div class="point-text"><strong>電磁波譜（由低頻到高頻）：</strong>無線電波 → 微波 → 紅外線 → 可見光（約 400–700 nm）→ 紫外線 → X射線 → 伽馬射線；記憶口訣：「無微紅可紫X伽」</div></div></div>
+      <div class="point"><div class="point-num">3</div><div><div class="point-text"><strong>光速與電磁波關係：</strong>c = 3×10⁸ m/s（真空中），c = fλ；光速是宇宙的速度上限（愛因斯坦狹義相對論的基石）；馬克斯威爾從方程中推算出光速，說明光就是電磁波</div></div></div>
+      <div class="point"><div class="point-num">4</div><div><div class="point-text"><strong>光的波動性——干涉：</strong>楊氏雙狹縫實驗；亮紋條件（路徑差 = mλ）、暗紋條件（路徑差 = (m+½)λ）；條紋間距 Δy = λL/d（d 縫距、L 屏距）</div></div></div>
+      <div class="point"><div class="point-num">5</div><div><div class="point-text"><strong>光的統一地位：</strong>光學與電磁學的統一（馬克斯威爾）是19世紀最偉大的理論成就之一；光的波動性在此確立，但第15堂（光電效應）將挑戰這個圖像——設下伏筆</div></div></div>
+    </div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📝</div><div class="label-text">課堂總結</div></div>
+    <div class="row-content"><div class="summary-text">本堂是第4章的高潮：馬克斯威爾在紙上用數學方程預言電磁波的存在，赫茲在實驗室中20年後加以驗證——這是人類史上最精彩的理論預測之一。光的波動性（雙狹縫干涉）在此被確立，但要提醒學生：這只是光的「一面」，第6章的光電效應將展示光的另一面（粒子性），前後形成絕妙的呼應。</div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">💡</div><div class="label-text">教學要訣</div></div>
+    <div class="row-content"><div class="tips">
+      <div class="tip"><div class="tip-icon">🔴</div><div class="tip-text">▶ 雙狹縫干涉實驗：觀察亮暗相間的干涉條紋，用 Δy = λL/d 計算雷射波長，讓學生感受用「數光圈間距」就能測出光的波長——精確而優雅</div></div>
+      <div class="tip"><div class="tip-icon">🔴</div><div class="tip-text">電磁波譜記憶法：「無微紅可紫X伽」；強調各段波的應用（微波爐、Wi-Fi、紅外線溫度計、可見光、防曬SPF防紫外線、X光透視、伽馬刀治腫瘤）</div></div>
+      <div class="tip"><div class="tip-icon">🔴</div><div class="tip-text">光速上限引申：「如果光速是有限的，我們看到的太陽是 8 分鐘前的樣子；仙女座星系的影像是 250 萬年前的——我們用望遠鏡看的是宇宙的過去」，激發宇宙觀</div></div>
+    </div></div>
+  </div>
+</div>
+
+<div class="lesson ch4">
+  <div class="lesson-header">
+    <div class="lesson-num"><span class="wk">第</span><span class="n">11</span><span class="u">堂</span></div>
+    <div class="lesson-title-block">
+      <div class="lesson-meta"><span>2026/5/17（日）</span><span class="ch-tag">第4章</span><span>4-5 都卜勒效應</span></div>
+      <div class="lesson-title">電與磁（四）：都卜勒效應</div>
+    </div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📌</div><div class="label-text">教學要項</div></div>
+    <div class="row-content"><div class="points">
+      <div class="point"><div class="point-num">1</div><div><div class="point-text"><strong>都卜勒效應原理：</strong>波源與觀測者之間有相對運動時，觀測到的頻率會改變；靠近時頻率升高（波長縮短）、遠離時頻率降低（波長拉長）——適用於所有波，包括聲波與電磁波</div></div></div>
+      <div class="point"><div class="point-num">2</div><div><div class="point-text"><strong>聲波都卜勒公式：</strong>f' = f·(v ± v_O)/(v ∓ v_S)；v 為波速，v_O 為觀測者速度，v_S 為波源速度；符號規則——觀測者靠近取「+」，遠離取「-」；波源靠近取「-」，遠離取「+」</div><div class="point-sub">快速記憶：「靠近讓頻率增加」——分子 v_O 用加、分母 v_S 用減，都使 f' 增大</div></div></div>
+      <div class="point"><div class="point-num">3</div><div><div class="point-text"><strong>聲爆（音爆）：</strong>當波源速度等於波速（馬赫數=1）時，聲波波前在前方疊加形成震波錐；超音速飛機、閃電（雷聲）的瞬間衝擊波現象</div></div></div>
+      <div class="point"><div class="point-num">4</div><div><div class="point-text"><strong>光的都卜勒效應（紅移/藍移）：</strong>星球遠離→光波拉長→紅移（頻率降低）；靠近→藍移（頻率升高）；哈伯（1929）觀測到幾乎所有星系都在紅移，推論宇宙正在膨脹</div></div></div>
+      <div class="point"><div class="point-num">5</div><div><div class="point-text"><strong>實際應用：</strong>警察測速雷達（微波都卜勒）、氣象雷達（追蹤風速與降水）、醫學超音波（測量血流速度）、天文觀測（恆星自轉、系外行星偵測）</div></div></div>
+    </div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📝</div><div class="label-text">課堂總結</div></div>
+    <div class="row-content"><div class="summary-text">都卜勒效應是連接日常生活（救護車音調變化）與宇宙學（哈伯定律、大霹靂）的美麗橋樑。它告訴我們：即使相距百億光年，物理定律仍然一致，我們能用光的顏色推知星球的運動狀態。本堂也是第4章的收尾，可簡要回顧電磁學從奧斯特→法拉第→馬克斯威爾→都卜勒的發展脈絡，讓學生感受這一章作為「統一」的深刻含義。</div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">💡</div><div class="label-text">教學要訣</div></div>
+    <div class="row-content"><div class="tips">
+      <div class="tip"><div class="tip-icon">🔴</div><div class="tip-text">播放救護車聲音音頻（靠近→遠離），讓學生閉眼感受音調的明顯變化——這個直覺體驗讓都卜勒效應從數學變成身體感受</div></div>
+      <div class="tip"><div class="tip-icon">🔴</div><div class="tip-text">公式符號規則最易搞混：建議學生只記原則「靠近讓 f' 增大」，每次代公式前先想「是靠近還是遠離」，再決定符號，而非死背±</div></div>
+      <div class="tip"><div class="tip-icon">🔴</div><div class="tip-text">宇宙膨脹的衝擊：「哈伯發現所有星系都在遠離，而且愈遠的星系退行速度愈快」——1929 年的觀測徹底改變人類的宇宙觀，引出大霹靂理論，激發學生對宇宙起源的好奇</div></div>
+    </div></div>
+  </div>
+</div>
+
+<!-- ════════════════ 第5章 ════════════════ -->
+<div class="ch-divider">
+  <div class="ch-divider-badge" style="background:#dcf5ed;color:#0c6e56">第 5 章　能量</div>
+</div>
+
+<div class="lesson ch5">
+  <div class="lesson-header">
+    <div class="lesson-num"><span class="wk">第</span><span class="n">12</span><span class="u">堂</span></div>
+    <div class="lesson-title-block">
+      <div class="lesson-meta"><span>2026/5/24（日）</span><span class="ch-tag">第5章</span><span>5-1 功與能量的形式 ／ 5-2 微觀尺度下的能量</span></div>
+      <div class="lesson-title">能量（一）：功與能量的形式</div>
+    </div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📌</div><div class="label-text">教學要項</div></div>
+    <div class="row-content"><div class="points">
+      <div class="point"><div class="point-num">1</div><div><div class="point-text"><strong>功的精確定義：</strong>W = F·d·cosθ；θ 為力與位移方向的夾角；力垂直位移時做零功（如月球圓周運動中重力）；反向做負功（如摩擦力在滑動方向上）</div></div></div>
+      <div class="point"><div class="point-num">2</div><div><div class="point-text"><strong>動能定理（功能定理）：</strong>合力對物體做的總功 = 動能的變化量，W_net = ΔKE = ½mv₂² - ½mv₁²；不需知道中間過程，只看力和位移的點積之和</div></div></div>
+      <div class="point"><div class="point-num">3</div><div><div class="point-text"><strong>各種能量形式的本質：</strong>動能（宏觀運動）、重力位能（重力場中的位置）、彈力位能（形變儲存）、化學能（分子鍵的電磁位能）、熱能（分子混亂動能）、核能（核力位能）</div></div></div>
+      <div class="point"><div class="point-num">4</div><div><div class="point-text"><strong>微觀尺度的熱能：</strong>溫度是分子平均動能（½m<v²>）的量度；同溫下，輕的分子速率更快（如氫分子比氧分子快4倍）；絕對零度（0 K = -273.15℃）時分子動能最低</div></div></div>
+      <div class="point"><div class="point-num">5</div><div><div class="point-text"><strong>功率：</strong>P = W/t = F·v（瞬時功率）；單位瓦特（W）= J/s；馬力 1 hp ≈ 746 W；跑車 200 馬力 ≈ 149 kW，感受功率量級</div></div></div>
+    </div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📝</div><div class="label-text">課堂總結</div></div>
+    <div class="row-content"><div class="summary-text">能量是物理學中最抽象卻最普遍的概念——它沒有固定形態，卻永不消滅，只在不同形式間轉換。本堂建立「功是能量轉移的量度」的核心理解，從宏觀延伸到微觀，讓學生明白溫度的本質是分子動能，連結第2章的微觀結構。動能定理是解題利器——不需知道運動的每一個細節，只關心初末態的能量差。</div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">💡</div><div class="label-text">教學要訣</div></div>
+    <div class="row-content"><div class="tips">
+      <div class="tip"><div class="tip-icon">🟢</div><div class="tip-text">零功常見迷思：「月球繞地球轉，重力有做功嗎？」（完美圓周：力垂直位移，做零功）；「搬重物水平走路，手做了多少功？」（手的力向上，位移水平，做零功！）</div></div>
+      <div class="tip"><div class="tip-icon">🟢</div><div class="tip-text">動能定理 vs 牛頓第二定律：動能定理關心「力的空間效果」；F=ma關心「力的瞬間效果」。有速度無加速度資訊時用動能定理更省力</div></div>
+      <div class="tip"><div class="tip-icon">🟢</div><div class="tip-text">熱能的本質：「摩擦生熱」不是能量消失，是宏觀動能轉為分子混亂動能。讓學生快速搓手感受溫度升高——分子在你的手掌間被加速了</div></div>
+    </div></div>
+  </div>
+</div>
+
+<div class="lesson ch5">
+  <div class="lesson-header">
+    <div class="lesson-num"><span class="wk">第</span><span class="n">13</span><span class="u">堂</span></div>
+    <div class="lesson-title-block">
+      <div class="lesson-meta"><span>2026/5/31（日）</span><span class="ch-tag">第5章</span><span>5-3 能量間的轉換與能量守恆 ／ ▶ 示範實驗：力學能守恆與運動</span></div>
+      <div class="lesson-title">能量（二）：能量守恆</div>
+    </div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📌</div><div class="label-text">教學要項</div></div>
+    <div class="row-content"><div class="points">
+      <div class="point"><div class="point-num">1</div><div><div class="point-text"><strong>機械能守恆定律的條件與內容：</strong>系統只受保守力（重力、彈力）做功，無摩擦時，動能 KE 與位能 PE 之和保持不變；KE₁ + PE₁ = KE₂ + PE₂</div></div></div>
+      <div class="point"><div class="point-num">2</div><div><div class="point-text"><strong>保守力 vs 非保守力：</strong>保守力做功與路徑無關（重力、彈力、靜電力）；非保守力做功與路徑有關（摩擦力、空氣阻力）；有非保守力時，機械能不守恆但總能量仍守恆</div></div></div>
+      <div class="point"><div class="point-num">3</div><div><div class="point-text"><strong>能量轉換的典型例子：</strong>單擺（動能↔重力位能）；彈簧振子（動能↔彈力位能）；拋體（動能↔重力位能）；發電機（動能→電能）；電燈（電能→光能＋熱能）</div></div></div>
+      <div class="point"><div class="point-num">4</div><div><div class="point-text"><strong>熱力學第一定律（概念）：</strong>系統內能的增加 = 外界對系統做的功 + 系統吸收的熱量（ΔU = W + Q）；這是能量守恆定律在熱力學系統中的具體表述</div></div></div>
+      <div class="point"><div class="point-num">5</div><div><div class="point-text"><strong>永動機為何不可能：</strong>第一類永動機（憑空產生能量）違反能量守恆；第二類永動機（100%把熱轉為功）違反熱力學第二定律（entropy增加）；歷史上無數失敗案例</div></div></div>
+    </div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📝</div><div class="label-text">課堂總結</div></div>
+    <div class="row-content"><div class="summary-text">能量守恆是物理學最偉大的定律之一——它不是偶然的經驗規律，而是空間平移對稱性的必然結果（諾特定理）。示範實驗讓學生親眼見到動能與位能的相互轉換，用數據驗證守恆。「能量守恆比牛頓方程更省力」是解題的重要策略：不需知道運動細節，只要知道初末態的能量，就能解出結果——這是物理學中最優雅的解題思路之一。</div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">💡</div><div class="label-text">教學要訣</div></div>
+    <div class="row-content"><div class="tips">
+      <div class="tip"><div class="tip-icon">🟢</div><div class="tip-text">▶ 示範實驗：單擺從等高點靜止釋放，擺回同高——能量守恆最美的演示。進階：讓球擺幾乎碰到鼻子，勇敢的學生不後退，體驗能量守恆的信念！</div></div>
+      <div class="tip"><div class="tip-icon">🟢</div><div class="tip-text">解題策略：「有速度有高度，不知加速度」→ 優先考慮能量守恆，不必算中間每個力，只需考慮初末態的 KE 和 PE</div></div>
+      <div class="tip"><div class="tip-icon">🟢</div><div class="tip-text">永動機的歷史：自古以來無數發明家投入畢生，試圖造出永動機，但全部失敗——這本身就是能量守恆定律最強的實驗支持之一</div></div>
+    </div></div>
+  </div>
+</div>
+
+<div class="lesson ch5">
+  <div class="lesson-header">
+    <div class="lesson-num"><span class="wk">第</span><span class="n">14</span><span class="u">堂</span></div>
+    <div class="lesson-title-block">
+      <div class="lesson-meta"><span>2026/6/7（日）</span><span class="ch-tag">第5章</span><span>5-4 質能互換與核能</span></div>
+      <div class="lesson-title">能量（三）：質能互換與核能</div>
+    </div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📌</div><div class="label-text">教學要項</div></div>
+    <div class="row-content"><div class="points">
+      <div class="point"><div class="point-num">1</div><div><div class="point-text"><strong>愛因斯坦質能等效 E = mc²：</strong>質量本身是能量的一種形式，c² ≈ 9×10¹⁶ m²/s² 是巨大的換算係數；1 g 物質完全轉換 ≈ 25,000 噸 TNT 的能量；靜止質量也有對應的靜止能量</div></div></div>
+      <div class="point"><div class="point-num">2</div><div><div class="point-text"><strong>結合能與質量虧損：</strong>核子結合成原子核時，系統質量略小於各核子質量之和（質量虧損 Δm）；虧損的質量轉為結合能 ΔE = Δm·c²，這是核子被束縛在核內的能量</div></div></div>
+      <div class="point"><div class="point-num">3</div><div><div class="point-text"><strong>結合能曲線（每核子結合能 vs 質量數）：</strong>鐵-56 在頂點最穩定；比鐵輕的核：融合→質量數增加→每核子結合能增加→放能；比鐵重的核：分裂→質量數減少→每核子結合能增加→放能</div></div></div>
+      <div class="point"><div class="point-num">4</div><div><div class="point-text"><strong>核分裂：</strong>鈾-235 吸收中子後分裂，產生鋇、氪及 2~3 個中子，同時釋放大量能量；鏈式反應：中子引發更多分裂；臨界質量：能持續鏈式反應的最小核燃料量；核電廠 vs 原子彈（受控 vs 失控）</div></div></div>
+      <div class="point"><div class="point-num">5</div><div><div class="point-text"><strong>核融合：</strong>氘+氚→氦+中子＋17.6 MeV；比分裂釋放更多能量（按質量比）；恆星的能量來源（太陽每秒消耗 600 億 kg 氫）；地球上的核融合發電（ITER 計畫）仍在開發中</div></div></div>
+    </div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📝</div><div class="label-text">課堂總結</div></div>
+    <div class="row-content"><div class="summary-text">E = mc² 是 20 世紀最著名的方程式，它揭示質量與能量是同一事物的兩種面貌。結合能曲線統一解釋了核分裂與核融合的放能條件，是本章最核心的概念圖。核能議題在台灣有高度社會討論性，本堂可結合政策討論，培養學生以科學事實為基礎進行公民論述的能力——「什麼是已知的科學事實，什麼是需要判斷的價值選擇」。</div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">💡</div><div class="label-text">教學要訣</div></div>
+    <div class="row-content"><div class="tips">
+      <div class="tip"><div class="tip-icon">🟢</div><div class="tip-text">結合能曲線是本堂最重要的一張圖：在黑板上畫一個倒 U 形曲線，標上鐵-56 頂點，左半段（融合）和右半段（分裂）各用箭頭標明能量釋放方向，讓學生抄下並反覆理解</div></div>
+      <div class="tip"><div class="tip-icon">🟢</div><div class="tip-text">能量量級感受：1 kg 鈾-235 分裂釋放的能量 ≈ 燃燒 3000 噸煤炭；太陽每秒把 400 萬噸質量轉為能量照耀宇宙——讓學生感受 c² 的巨大</div></div>
+      <div class="tip"><div class="tip-icon">🟢</div><div class="tip-text">核能議題討論：「核能的碳排放比燃煤低，但有廢料處理問題——你的立場是什麼？依據哪些科學事實？」引導學生區分事實判斷與價值判斷，培養理性公民素養</div></div>
+    </div></div>
+  </div>
+</div>
+
+<!-- ════════════════ 第6章 ════════════════ -->
+<div class="ch-divider">
+  <div class="ch-divider-badge" style="background:#ede9fe;color:#5b21b6">第 6 章　量子現象</div>
+</div>
+
+<div class="lesson ch6">
+  <div class="lesson-header">
+    <div class="lesson-num"><span class="wk">第</span><span class="n">15</span><span class="u">堂</span></div>
+    <div class="lesson-title-block">
+      <div class="lesson-meta"><span>2026/6/14（日）</span><span class="ch-tag">第6章</span><span>6-1 光電效應 ／ 6-2 物質波 ／ 6-3 波粒二象性</span></div>
+      <div class="lesson-title">量子現象（上）</div>
+    </div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📌</div><div class="label-text">教學要項</div></div>
+    <div class="row-content"><div class="points">
+      <div class="point"><div class="point-num">1</div><div><div class="point-text"><strong>古典物理的困境——黑體輻射：</strong>古典理論預測高頻輻射能量趨於無限（「紫外災變」），普朗克（1900）假設能量是不連續的量子 E = hf，h = 6.63×10⁻³⁴ J·s，完美解釋實驗數據</div></div></div>
+      <div class="point"><div class="point-num">2</div><div><div class="point-text"><strong>光電效應的四個關鍵特徵（古典波動論無法解釋）：</strong>①有截止頻率（低頻光無論多強都不能打出電子）②電子立即逸出（無時間延遲）③最大動能由頻率決定而非光強④電流大小與光強成正比</div></div></div>
+      <div class="point"><div class="point-num">3</div><div><div class="point-text"><strong>愛因斯坦的光子說（1905）：</strong>光是由光子組成的粒子流，每個光子能量 E = hf；光子能量超過逸出功（W）才能打出電子；最大動能 KE_max = hf - W；截止頻率 f₀ = W/h</div></div></div>
+      <div class="point"><div class="point-num">4</div><div><div class="point-text"><strong>德布羅意物質波（1924）：</strong>如果光既是波又是粒子，那粒子也應該有波動性；物質波波長 λ = h/mv = h/p；電子的雙狹縫干涉實驗（1927 年戴維森-革末）確認了電子的波動性</div></div></div>
+      <div class="point"><div class="point-num">5</div><div><div class="point-text"><strong>波粒二象性：</strong>光在傳播時表現波動性（干涉、繞射），與物質交互作用時表現粒子性（光電效應、康普頓散射）；電子亦然；「波粒二象性」不是矛盾，而是量子力學的基本特徵</div></div></div>
+      <div class="point"><div class="point-num">6</div><div><div class="point-text"><strong>不確定性原理（概念）：</strong>海森堡提出 Δx·Δp ≥ h/4π；位置測量越精確，動量就越不確定——這不是測量技術的限制，而是自然界的基本特性；宏觀物體的波長遠小於原子，量子效應可忽略</div></div></div>
+    </div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📝</div><div class="label-text">課堂總結</div></div>
+    <div class="row-content"><div class="summary-text">本章是物理學最大的革命。光電效應告訴我們光是粒子；電子的干涉告訴我們粒子是波——這兩個顛覆在「波粒二象性」中融合為量子力學的核心概念。愛因斯坦因此獲得諾貝爾獎（不是相對論！）。注意與第10堂雙狹縫干涉的前後呼應：同一個實驗裝置，當我們「不看」電子走哪條縫時，出現干涉條紋（波）；當我們「看」時，條紋消失（粒子）——這就是量子力學最令人困惑也最美麗的地方。</div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">💡</div><div class="label-text">教學要訣</div></div>
+    <div class="row-content"><div class="tips">
+      <div class="tip"><div class="tip-icon">🟣</div><div class="tip-text">光電效應四大特徵逐一擊破古典預測：「如果光是波，頻率低但強度大應該能打出電子（古典預測）；實驗事實：無論多強的低頻光都打不出來——為什麼？」讓學生感受古典理論崩潰的震撼</div></div>
+      <div class="tip"><div class="tip-icon">🟣</div><div class="tip-text">物質波量級計算：人（60 kg）以步行速度（1.4 m/s）走路的波長 λ = h/mv ≈ 8×10⁻³⁶ m，遠小於原子（10⁻¹⁰ m），所以我們看不到人的量子效應；電子的波長則可與晶格間距相當，所以電子能顯示干涉</div></div>
+      <div class="tip"><div class="tip-icon">🟣</div><div class="tip-text">愛因斯坦的諾貝爾獎知識糾正：大多數人以為是因為相對論，實際上是因為「光電效應的解釋」（1921 年）——這個小知識讓學生記住光電效應的重要性</div></div>
+    </div></div>
+  </div>
+</div>
+
+<div class="lesson ch6">
+  <div class="lesson-header">
+    <div class="lesson-num"><span class="wk">第</span><span class="n">16</span><span class="u">堂</span></div>
+    <div class="lesson-title-block">
+      <div class="lesson-meta"><span>2026/6/21（日）</span><span class="ch-tag">第6章</span><span>6-4 原子光譜 ／ 六章總複習</span></div>
+      <div class="lesson-title">量子現象（下）＋ 全冊總複習</div>
+    </div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📌</div><div class="label-text">教學要項</div></div>
+    <div class="row-content"><div class="points">
+      <div class="point"><div class="point-num">1</div><div><div class="point-text"><strong>氫原子光譜的特徵：</strong>不連續的亮線光譜（發射光譜），只在特定波長出現；古典物理（帶電粒子做加速運動應輻射電磁波並螺旋墜入核）完全無法解釋氫原子的穩定性與離散光譜</div></div></div>
+      <div class="point"><div class="point-num">2</div><div><div class="point-text"><strong>波耳模型（1913）的三個假設：</strong>①電子只能在特定半徑的圓形軌道（量子化軌道）②在軌道上運行不輻射能量（定態）③躍遷時放出/吸收光子，光子能量 = 能階差 ΔE = hf</div></div></div>
+      <div class="point"><div class="point-num">3</div><div><div class="point-text"><strong>氫原子能階公式：</strong>E_n = -13.6/n² eV（n = 1, 2, 3…）；基態(n=1)能量最低最穩定；激發態(n≥2)不穩定；電子從高能階(n_i)躍遷到低能階(n_f)放出光子，ΔE = hf = hc/λ</div></div></div>
+      <div class="point"><div class="point-num">4</div><div><div class="point-text"><strong>發射光譜 vs 吸收光譜：</strong>同一元素的吸收暗線位置與發射亮線位置完全互補；天文學家用太陽光的吸收光譜，鑑定了太陽大氣中存在的元素（氦元素即先從太陽光譜發現，再在地球找到）</div></div></div>
+      <div class="point"><div class="point-num">5</div><div><div class="point-text"><strong>全冊六章主線回顧：</strong>科學方法（工具）→ 微觀結構（物質）→ 運動（力）→ 電磁（場）→ 能量（守恆）→ 量子（極限）；各章之間的相互連結與呼應點梳理</div></div></div>
+      <div class="point"><div class="point-num">6</div><div><div class="point-text"><strong>學測題型導覽：</strong>基礎物理學測以概念理解題為主，計算相對簡單；常見題型：圖形判讀（x-t、v-t圖）、守恆律應用、電磁感應方向判斷、光電效應計算；建議同學整理「一頁公式表」</div></div></div>
+    </div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">📝</div><div class="label-text">課堂總結</div></div>
+    <div class="row-content"><div class="summary-text">波耳的氫原子模型是量子力學黎明前的最後一步——它半古典半量子，既有軌道概念（古典），又有量子化條件（量子）。它成功解釋了氫光譜，卻對多電子原子束手無策，最終被現代量子力學取代。最後以六章架構的大回顧收尾：從科學方法到量子現象，學生走過了一段從日常直覺到顛覆想象的旅程。這不只是知識的積累，更是思維方式的轉變——用證據和邏輯理解世界，永遠準備在新證據面前修正，這就是物理學教給我們最珍貴的禮物。</div></div>
+  </div>
+  <div class="section-row">
+    <div class="row-label"><div class="icon">💡</div><div class="label-text">教學要訣</div></div>
+    <div class="row-content"><div class="tips">
+      <div class="tip"><div class="tip-icon">🟣</div><div class="tip-text">能階圖的標準畫法：n=1 最低（-13.6 eV），往上 n=2(-3.4)、n=3(-1.5)…越高越密集趨近 0；箭頭向下放光子（顏色對應可見光範圍），箭頭向上吸收光子；讓學生當場計算 n=3→n=2 的光子波長（656 nm，紅色氫α線）</div></div>
+      <div class="tip"><div class="tip-icon">🟣</div><div class="tip-text">太陽光譜的故事：1868 年法國科學家在日食時的太陽光譜中發現未知吸收線，命名為 Helium（太陽元素）；27 年後才在地球礦石中找到氦氣——光譜是宇宙的身份證，讓學生感受原子光譜的威力</div></div>
+      <div class="tip"><div class="tip-icon">🟣</div><div class="tip-text">收尾一句話：「從第1章的科學方法，到今天的量子現象，我們走過了400年的物理學發展。每一個定律背後都有無數人的觀察、猜測、驗證和修正——這是人類最美的集體智慧之一。」</div></div>
+    </div></div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<div style="text-align:center;padding:32px;color:#9ca3af;font-size:13px;border-top:1px solid #e5e7eb;background:#fff;">
+  基礎物理 16 週教學計畫 ｜ 依 108 課綱編製 ｜ 2026/3/8 – 2026/6/21
+</div>
+
+</body>
+</html>
